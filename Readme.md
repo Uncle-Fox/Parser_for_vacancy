@@ -6,7 +6,7 @@
 ### Что обсуждается?
 
 ### 1) Язык программирования и его библиотеки/фреймворки:
-- **Python**: **HTTP-запросы**: Requests, Beautiful Soup.  **Эмулятор**: Selenium. и **Др**: urllib, ScraPy
+- **Python** (предпочтительно): **HTTP-запросы**: Requests, Beautiful Soup.  **Эмулятор**: Selenium. и **Др**: urllib, ScraPy
 - **Java**: Jsoup, Selenium
 - **C#**
 
