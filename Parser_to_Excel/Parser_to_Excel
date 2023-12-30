@@ -1,0 +1,26 @@
+import openpyxl
+import json
+
+with open("data.json", encoding="utf-8") as file:
+    data = json.load(file)
+
+
+
+book = openpyxl.Workbook()
+sheet = book.active
+sheet['A1'] = 'Name'
+sheet['B1'] = 'Salary'
+sheet['C1'] = 'Skills'
+sheet['D1'] = 'Link'
+
+row = 2
+for i in data:
+    if type(i) == dict:
+        sheet[row][0].value = i['name']
+        sheet[row][1].value = i['salary']
+        sheet[row][2].value = ', '.join(i['skills'])
+        sheet[row][3].value = i['link']
+        row += 1
+
+book.save("Excel_from_Parser.xlsx")
+book.close()
