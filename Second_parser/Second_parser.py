@@ -30,6 +30,7 @@ def get_links(text):
     soup = BeautifulSoup(data.content, "lxml")
     try:
         page_count = int(soup.find("div", attrs={"class":"pager"}).find_all("span",recursive=False)[-1].find("a").find("span").text)
+        print(f"Всего нашлось страниц: {page_count}")
     except:
         return
     try:
@@ -59,13 +60,13 @@ def get_vacancy(link):
         logging.error("An ERROR str 58")
         return
     soup = BeautifulSoup(data.content, "lxml")
-    try:
-        number = soup.find("h1", class_="bloko-header-section-3", attrs={"data-qa": "bloko-header-3"}).text
-        total_number = int(''.join(filter(str.isdigit, number)))
-        print(f"{number} and {total_number}")
-    except:
-        total_number = ""
-        print(f"не удалось найти общее кол-во")
+    # try:
+    #     number = soup.find("h1", class_="bloko-header-section-3", attrs={"data-qa": "bloko-header-3"}).text
+    #     total_number = int(''.join(filter(str.isdigit, number)))
+    #     print(f"{number} and {total_number}")
+    # except:
+    #     total_number = ""
+    #     print(f"не удалось найти общее кол-во")
     try:
         name = soup.find(attrs={"class": "vacancy-title"}).text
     except:
@@ -104,16 +105,27 @@ def get_vacancy(link):
 
 if __name__ == "__main__":
     logging.info("Program started successfully")
-    data = []
-    count = 1;
+    data_first = []
+    data_second = []
+    count = 1
     #print("Найдено вакансий: {total_number} \nПримерное время ожидания: {total_number/2}")
-    for a in get_links("программист+python"):
-        data.append(get_vacancy(a))
-        time.sleep(0.25)
+    for a in get_links("программист+python+junior"):
+        data_first.append(get_vacancy(a))
+        #time.sleep(0.25)
         logging.info(f"Correct number {count}")
         count += 1
-        with open("data.json", "w", encoding="utf-8") as f:
-            json.dump(data,f,indent=4,ensure_ascii=False )
+        with open("data_Python.json", "w", encoding="utf-8") as f:
+            json.dump(data_first,f,indent=4,ensure_ascii=False )
+    f.close()
+    
+    for a in get_links("программист+Java+junior"):
+        data_second.append(get_vacancy(a))
+        #time.sleep(0.25)
+        logging.info(f"Correct number {count}")
+        count += 1
+        with open("data_Java.json", "w", encoding="utf-8") as j:
+            json.dump(data_second,j,indent=4,ensure_ascii=False )
+    j.close()
 
 
 # Данный блок выводит в терминал найденные данные в виде  resume = {"name": name,"salary": salary,"skills": tags}

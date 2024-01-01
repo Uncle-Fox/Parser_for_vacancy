@@ -1,8 +1,8 @@
 import openpyxl
 import json
 
-with open("data.json", encoding="utf-8") as file:
-    data = json.load(file)
+with open("data_Java.json", encoding="utf-8") as file_Java:
+    data_Java = json.load(file_Java)
 
 book = openpyxl.Workbook()
 sheet = book.active
@@ -14,7 +14,7 @@ sheet['e1'] = 'Skills'
 sheet['f1'] = 'Link'
 
 row = 2
-for i in data:
+for i in data_Java:
     if type(i) == dict:
         sheet[row][0].value = i['name']
         sheet[row][1].value = i['salary']
@@ -22,6 +22,30 @@ for i in data:
         sheet[row][3].value = i['adress']
         sheet[row][4].value = ', '.join(i['skills'])
         sheet[row][5].value = i['link']
+        row += 1
+
+book.save("Excel_from_Parser.xlsx")
+
+with open("data_Python.json", encoding="utf-8") as file_Python:
+    data_Python = json.load(file_Python)
+
+sheet_num2 = book.create_sheet("Python")
+sheet_num2['A1'] = 'Name'
+sheet_num2['B1'] = 'Salary'
+sheet_num2['c1'] = 'City'
+sheet_num2['d1'] = 'Adress'
+sheet_num2['e1'] = 'Skills'
+sheet_num2['f1'] = 'Link'
+
+row = 2
+for i in data_Python:
+    if type(i) == dict:
+        sheet_num2[row][0].value = i['name']
+        sheet_num2[row][1].value = i['salary']
+        sheet_num2[row][2].value = i['city']
+        sheet_num2[row][3].value = i['adress']
+        sheet_num2[row][4].value = ', '.join(i['skills'])
+        sheet_num2[row][5].value = i['link']
         row += 1
 
 book.save("Excel_from_Parser.xlsx")
