@@ -8,7 +8,8 @@ import json
 def get_links(text):
     ua = fake_useragent.UserAgent()
     data = requests.get(
-        url=f"https://hh.ru/search/vacancy?text={text}&salary=&ored_clusters=true&page=1",
+        #url=f"https://hh.ru/search/vacancy?text={text}&salary=&ored_clusters=true&page=1",
+        url=f"https://hh.ru/search/vacancy?ored_clusters=true&area=113&search_field=name&search_field=company_name&search_field=description&text={text}&enable_snippets=false&L_save_area=true&page=1",
         headers={"user-agent":ua.random}
     )
     if data.status_code != 200:
@@ -21,7 +22,8 @@ def get_links(text):
     try:
         for page in range(page_count):
             data = requests.get(
-            url=f"https://hh.ru/search/vacancy?text={text}&salary=&ored_clusters=true&page={page}",
+            #url=f"https://hh.ru/search/vacancy?text={text}&salary=&ored_clusters=true&page={page}",
+            url=f"https://hh.ru/search/vacancy?ored_clusters=true&area=113&search_field=name&search_field=company_name&search_field=description&text={text}&enable_snippets=false&L_save_area=true&page={page}",
             headers={"user-agent":ua.random}
             )
             if data.status_code != 200:
@@ -52,12 +54,27 @@ def get_vacancy(link):
     except:
         salary = ""
     try:
+        company =  soup.find(attrs={"class": "vacancy-company-name"}).text #переписать на компанию
+    except:
+        company = ""
+    try:
+        city =  soup.find("p", attrs={"data-qa": "vacancy-view-location"}).text #переписать на город
+    except:
+        city = ""
+    try:
+        adress =  soup.find("span", attrs={"data-qa": "vacancy-view-raw-address"}).text
+    except:
+        adress = ""
+    try:
         tags = [tag.text for tag in soup.find(attrs={"class":"bloko-tag-list"}).find_all(attrs={"class":"bloko-tag bloko-tag_inline"})]
     except:
         tags = []
     resume = {
         "name": name,
         "salary": salary,
+        "company": company,
+        "adress": adress,
+        "city": city,
         "skills": tags,
         "link": link
     }
@@ -66,7 +83,7 @@ def get_vacancy(link):
 
 if __name__ == "__main__":
     data = []
-    for a in get_links("программист Python"):
+    for a in get_links("программист+python+junior"):
         data.append(get_vacancy(a))
         time.sleep(1)
         with open("data.json", "w", encoding="utf-8") as f:
