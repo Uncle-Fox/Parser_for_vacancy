@@ -4,6 +4,18 @@ import fake_useragent
 import fake_useragent
 import time
 import json
+import logging
+import re
+
+logging.basicConfig(level=logging.INFO, filename="py_log.log",filemode="w",
+                    format="%(asctime)s %(levelname)s %(message)s")
+
+# logging.debug("A DEBUG Message")
+# logging.info("An INFO")
+# logging.warning("A WARNING")
+# logging.error("An ERROR")
+# logging.critical("A message of CRITICAL severity")
+
 
 def get_links(text):
     ua = fake_useragent.UserAgent()
@@ -13,6 +25,7 @@ def get_links(text):
         headers={"user-agent":ua.random}
     )
     if data.status_code != 200:
+        logging.error("An ERROR str 27")
         return
     soup = BeautifulSoup(data.content, "lxml")
     try:
@@ -33,7 +46,7 @@ def get_links(text):
                 yield f"{a.attrs['href'].split('?')[0]}"
     except Exception as e:
         print(f"{e}")
-    time.sleep(1)
+    time.sleep(0.25)
 
     
 def get_vacancy(link):
@@ -43,8 +56,16 @@ def get_vacancy(link):
         headers={"user-agent":ua.random}
     )
     if data.status_code != 200:
+        logging.error("An ERROR str 58")
         return
     soup = BeautifulSoup(data.content, "lxml")
+    try:
+        number = soup.find("h1", class_="bloko-header-section-3", attrs={"data-qa": "bloko-header-3"}).text
+        total_number = int(''.join(filter(str.isdigit, number)))
+        print(f"{number} and {total_number}")
+    except:
+        total_number = ""
+        print(f"не удалось найти общее кол-во")
     try:
         name = soup.find(attrs={"class": "vacancy-title"}).text
     except:
@@ -54,11 +75,11 @@ def get_vacancy(link):
     except:
         salary = ""
     try:
-        company =  soup.find(attrs={"class": "vacancy-company-name"}).text #переписать на компанию
+        company =  soup.find(attrs={"class": "vacancy-company-name"}).text
     except:
         company = ""
     try:
-        city =  soup.find("p", attrs={"data-qa": "vacancy-view-location"}).text #переписать на город
+        city =  soup.find("p", attrs={"data-qa": "vacancy-view-location"}).text
     except:
         city = ""
     try:
@@ -82,10 +103,15 @@ def get_vacancy(link):
 
 
 if __name__ == "__main__":
+    logging.info("Program started successfully")
     data = []
-    for a in get_links("программист+python+junior"):
+    count = 1;
+    #print("Найдено вакансий: {total_number} \nПримерное время ожидания: {total_number/2}")
+    for a in get_links("программист+python"):
         data.append(get_vacancy(a))
-        time.sleep(1)
+        time.sleep(0.25)
+        logging.info(f"Correct number {count}")
+        count += 1
         with open("data.json", "w", encoding="utf-8") as f:
             json.dump(data,f,indent=4,ensure_ascii=False )
 
