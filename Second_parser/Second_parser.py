@@ -5,7 +5,6 @@ import fake_useragent
 import time
 import json
 import logging
-import re
 
 logging.basicConfig(level=logging.INFO, filename="py_log.log",filemode="w",
                     format="%(asctime)s %(levelname)s %(message)s")
@@ -47,7 +46,7 @@ def get_links(text):
                 yield f"{a.attrs['href'].split('?')[0]}"
     except Exception as e:
         print(f"{e}")
-    time.sleep(0.25)
+    #time.sleep(0.25)
 
     
 def get_vacancy(link):
@@ -109,7 +108,7 @@ if __name__ == "__main__":
     data_second = []
     count = 1
     #print("Найдено вакансий: {total_number} \nПримерное время ожидания: {total_number/2}")
-    for a in get_links("программист+python+junior"):
+    for a in get_links("программист+python"):
         data_first.append(get_vacancy(a))
         #time.sleep(0.25)
         logging.info(f"Correct number {count}")
@@ -118,14 +117,14 @@ if __name__ == "__main__":
             json.dump(data_first,f,indent=4,ensure_ascii=False )
     f.close()
     
-    for a in get_links("программист+Java+junior"):
-        data_second.append(get_vacancy(a))
-        #time.sleep(0.25)
-        logging.info(f"Correct number {count}")
-        count += 1
-        with open("data_Java.json", "w", encoding="utf-8") as j:
-            json.dump(data_second,j,indent=4,ensure_ascii=False )
-    j.close()
+    # for a in get_links("программист+Java+junior"):
+    #     data_second.append(get_vacancy(a))
+    #     #time.sleep(0.25)
+    #     logging.info(f"Correct number {count}")
+    #     count += 1
+    #     with open("data_Java.json", "w", encoding="utf-8") as j:
+    #         json.dump(data_second,j,indent=4,ensure_ascii=False )
+    # j.close()
 
 
 # Данный блок выводит в терминал найденные данные в виде  resume = {"name": name,"salary": salary,"skills": tags}

@@ -26,6 +26,9 @@ class ScrapyspiderHhSpider(scrapy.Spider):
                 processed_urls.add(url)
                 yield {
                     'name': vacancy.xpath('.//span/a[contains(@data-qa, "serp-item__title") and contains(@class, "serp-item__title")]/text()').get(),
-                    'salary': vacancy.xpath('.//span[contains(@data-qa, "vacancy-serp__vacancy-compensation")]/text()').get(),
+                    'salary': ' '.join(vacancy.xpath('.//span[contains(@data-qa, "vacancy-serp__vacancy-compensation")]/text()').getall()),
+                    'company': vacancy.xpath('.//a[@class="bloko-link bloko-link_kind-tertiary"]/text()').get(),
+                    'city': vacancy.xpath('.//div[@class="bloko-text"]/text()').get(),
+                    'exp': vacancy.xpath('//div[contains(@class, "bloko-text") and contains(@data-qa, "vacancy-serp__vacancy-work-experience")]/text()').get(),
                     'url': url.split('?')[0]
                 }

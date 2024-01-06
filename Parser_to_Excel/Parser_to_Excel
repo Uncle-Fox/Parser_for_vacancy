@@ -1,52 +1,84 @@
 import openpyxl
 import json
 
-with open("data_Java.json", encoding="utf-8") as file_Java:
-    data_Java = json.load(file_Java)
+# with open("data_Java.json", encoding="utf-8") as file_Java:
+#     data_Java = json.load(file_Java)
 
-book = openpyxl.Workbook()
-sheet = book.active
-sheet['A1'] = 'Name'
-sheet['B1'] = 'Salary'
-sheet['c1'] = 'City'
-sheet['d1'] = 'Adress'
-sheet['e1'] = 'Skills'
-sheet['f1'] = 'Link'
+# book = openpyxl.Workbook()
+# sheet = book.active
+# sheet['A1'] = 'Name'
+# sheet['B1'] = 'Salary'
+# sheet['c1'] = 'City'
+# sheet['d1'] = 'Adress'
+# sheet['e1'] = 'Skills'
+# sheet['f1'] = 'Link'
 
-row = 2
-for i in data_Java:
-    if type(i) == dict:
-        sheet[row][0].value = i['name']
-        sheet[row][1].value = i['salary']
-        sheet[row][2].value = i['city']
-        sheet[row][3].value = i['adress']
-        sheet[row][4].value = ', '.join(i['skills'])
-        sheet[row][5].value = i['link']
-        row += 1
+# row = 2
+# for i in data_Java:
+#     if type(i) == dict:
+#         sheet[row][0].value = i['name']
+#         sheet[row][1].value = i['salary']
+#         sheet[row][2].value = i['city']
+#         sheet[row][3].value = i['adress']
+#         sheet[row][4].value = ', '.join(i['skills'])
+#         sheet[row][5].value = i['link']
+#         row += 1
 
-book.save("Excel_from_Parser.xlsx")
+# book.save("Excel_from_Parser.xlsx")
 
-with open("data_Python.json", encoding="utf-8") as file_Python:
+# with open("data_Python.json", encoding="utf-8") as file_Python:
+#     data_Python = json.load(file_Python)
+
+# sheet_num2 = book.create_sheet("Python")
+# sheet_num2['A1'] = 'Name'
+# sheet_num2['B1'] = 'Salary'
+# sheet_num2['c1'] = 'City'
+# sheet_num2['d1'] = 'Adress'
+# sheet_num2['e1'] = 'Skills'
+# sheet_num2['f1'] = 'Link'
+
+# row = 2
+# for i in data_Python:
+#     if type(i) == dict:
+#         sheet_num2[row][0].value = i['name']
+#         sheet_num2[row][1].value = i['salary']
+#         sheet_num2[row][2].value = i['city']
+#         sheet_num2[row][3].value = i['adress']
+#         sheet_num2[row][4].value = ', '.join(i['skills'])
+#         sheet_num2[row][5].value = i['link']
+#         row += 1
+
+# book.save("Excel_from_Parser.xlsx")
+# book.close()
+
+with open("HH_crawler_Scrapy3.json", encoding="utf-8") as file_Python:
     data_Python = json.load(file_Python)
 
-sheet_num2 = book.create_sheet("Python")
-sheet_num2['A1'] = 'Name'
-sheet_num2['B1'] = 'Salary'
-sheet_num2['c1'] = 'City'
-sheet_num2['d1'] = 'Adress'
-sheet_num2['e1'] = 'Skills'
-sheet_num2['f1'] = 'Link'
+book = openpyxl.Workbook()
+sheet_num2 = book.active
+sheet_num2['A1'] = 'ID'
+sheet_num2['B1'] = 'Name'
+sheet_num2['C1'] = 'Salary'
+sheet_num2['D1'] = 'Company'
+sheet_num2['E1'] = 'City'
+sheet_num2['F1'] = 'Exp'
+sheet_num2['G1'] = 'Url'
+# sheet_num2['f1'] = 'Link'
 
 row = 2
+count = 1
 for i in data_Python:
     if type(i) == dict:
-        sheet_num2[row][0].value = i['name']
-        sheet_num2[row][1].value = i['salary']
-        sheet_num2[row][2].value = i['city']
-        sheet_num2[row][3].value = i['adress']
-        sheet_num2[row][4].value = ', '.join(i['skills'])
-        sheet_num2[row][5].value = i['link']
+        sheet_num2[row][0].value = count
+        sheet_num2[row][1].value = i['name']
+        sheet_num2[row][2].value = i['salary']
+        sheet_num2[row][3].value = i['company']
+        sheet_num2[row][4].value = i['city']
+        sheet_num2[row][5].value = i['exp']
+        sheet_num2[row][6].value = i['url']
+        # sheet_num2[row][5].value = i['link']
         row += 1
+        count += 1
 
-book.save("Excel_from_Parser.xlsx")
+book.save("Excel_from_Parser_Scrapy3.xlsx")
 book.close()
